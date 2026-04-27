@@ -1,0 +1,169 @@
+services:
+  app:
+    build: .
+    container_name: familiaMogi_front
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - familia_mogi_logs:/var/www/html/storage/logs
+    depends_on:
+      - db
+      - redis
+      - minio
+    restart: "no"
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: familia_mogi
+      DB_USERNAME: postgres
+      DB_PASSWORD: rootpassword123
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8040:80"
+      - "5177:5177"
+    command: >
+      bash -lc "
+      chown -R www-data:www-data storage bootstrap/cache &&
+      (npm run dev -- --host 0.0.0.0 --port 5177 &) &&
+      apache2-foreground"
+    networks:
+      - default
+      - shared-network
+
+  queue:
+    build: .
+    container_name: familiaMogi_front-queue
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+      - redis
+      - minio
+    restart: unless-stopped
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: familia_mogi
+      DB_USERNAME: postgres
+      DB_PASSWORD: rootpassword123
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    command: >
+      bash -lc "
+      php artisan queue:work redis --sleep=1 --tries=3 --timeout=120"
+    networks:
+      - default
+      - shared-network
+
+  scheduler:
+    build: .
+    container_name: familiaMogi_front-scheduler
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+      - redis
+      - minio
+    restart: unless-stopped
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: "1"
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: familia_mogi
+      DB_USERNAME: postgres
+      DB_PASSWORD: rootpassword123
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    command: >
+      bash -lc "
+      php artisan schedule:work"
+    networks:
+      - default
+      - shared-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: familiaMogi_front-db
+    ports:
+      - "5435:5432"
+    restart: "no"
+    environment:
+      POSTGRES_DB: familia_mogi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: rootpassword123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+
+  redis:
+    image: redis:7-alpine
+    container_name: familiaMogi_front-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    ports:
+      - "6380:6379"
+    networks:
+      - default
+      - shared-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: familiaMogi_front-minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - miniodata:/data
+    networks:
+      - default
+      - shared-network
+
+  minio-init:
+    image: minio/mc:latest
+    container_name: familiaMogi_front-minio-init
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 minioadmin minioadmin &&
+      mc mb --ignore-existing local/familia-mogi &&
+      mc anonymous set download local/familia-mogi
+      "
+    restart: "no"
+    networks:
+      - default
+      - shared-network
+
+volumes:
+  pgdata:
+  redisdata:
+  familia_mogi_logs:
+  miniodata:
+
+networks:
+  shared-network:
+    external: true

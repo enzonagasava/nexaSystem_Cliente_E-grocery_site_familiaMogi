@@ -7,6 +7,49 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Infra Stack (PostgreSQL + Redis + Queue)
+
+## Integracao com nexaSystem_E-grocery
+
+Documentação passo a passo da integração API + Webhook:
+
+- [docs/integracao-e-grocery/README.md](./docs/integracao-e-grocery/README.md)
+
+### Serviços
+
+- `app`: Laravel + Apache + Vite (porta `8040`)
+- `db`: PostgreSQL 16 (porta `5435`)
+- `redis`: Redis 7 (porta `6380`)
+- `minio`: storage S3 compatível (API `9000`, console `9001`)
+- `queue`: worker dedicado para filas (`php artisan queue:work redis`)
+- `scheduler`: agendador Laravel (`php artisan schedule:work`)
+
+### Subir ambiente
+
+```bash
+docker compose up -d --build
+docker compose exec app php artisan migrate
+```
+
+### Verificar fila
+
+```bash
+docker compose logs -f queue
+```
+
+### Verificar scheduler
+
+```bash
+docker compose logs -f scheduler
+```
+
+### Variáveis principais
+
+- `DB_CONNECTION=pgsql`
+- `QUEUE_CONNECTION=redis`
+- `CACHE_STORE=redis`
+- `SESSION_DRIVER=redis`
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
