@@ -89,7 +89,19 @@
             </div>
           </div>
 
-          <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <p v-if="loadingCatalog" class="mt-10 rounded-2xl border border-[#d9dfcf] bg-white px-4 py-3 text-sm font-semibold text-[#5f6b54]">
+            Carregando produtos do catálogo...
+          </p>
+
+          <p v-else-if="catalogError" class="mt-10 rounded-2xl border border-[#eed8b0] bg-[#fff7e7] px-4 py-3 text-sm font-semibold text-[#7f5518]">
+            {{ catalogError }}
+          </p>
+
+          <p v-else-if="filteredProducts.length === 0" class="mt-10 rounded-2xl border border-[#d9dfcf] bg-white px-4 py-3 text-sm font-semibold text-[#5f6b54]">
+            Nenhum produto encontrado para este filtro.
+          </p>
+
+          <div v-else class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             <article v-for="product in filteredProducts" :key="product.id" class="overflow-hidden rounded-[30px] border border-[#d9dfcf] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
               <a :href="`/produtos/${product.id}`" class="relative block">
                 <img :src="product.image" :alt="product.name" class="h-64 w-full object-cover" />
@@ -314,7 +326,6 @@
 import { computed, onMounted, reactive, ref } from 'vue';
 import axios from 'axios';
 import { storeToRefs } from 'pinia';
-import { products as catalogProducts } from '../data/products';
 import { useCartStore } from '../stores/cartStore';
 import SiteHeader from './SiteHeader.vue';
 import CartDrawer from './CartDrawer.vue';
@@ -333,23 +344,13 @@ const brand = {
   logo: '/images/logo-familia-mogi.svg',
 };
 
-const categories = [
-  { name: 'Verduras', description: 'Folhas frescas e selecionadas para consumo diário.', icon: '🥬' },
-  { name: 'Legumes', description: 'Legumes premium com padrão visual e sabor natural.', icon: '🥕' },
-  { name: 'Cogumelos', description: 'Linha especial para varejo e gastronomia.', icon: '🍄' },
-  { name: 'Cestas', description: 'Combos para família e pedidos recorrentes.', icon: '🧺' },
-];
-
-const products = catalogProducts.map((item) => ({
-  id: item.id,
-  name: item.name,
-  category: item.category,
-  price: item.price,
-  unit: item.unit,
-  badge: item.badge,
-  image: item.images[0],
-  description: item.shortDescription,
-}));
+const categoryMeta = {
+  Verduras: { description: 'Folhas frescas e selecionadas para consumo diário.', icon: '🥬' },
+  Legumes: { description: 'Legumes premium com padrão visual e sabor natural.', icon: '🥕' },
+  Cogumelos: { description: 'Linha especial para varejo e gastronomia.', icon: '🍄' },
+  Cestas: { description: 'Combos para família e pedidos recorrentes.', icon: '🧺' },
+  'Sem categoria': { description: 'Produtos gerais do catálogo.', icon: '🛒' },
+};
 
 const testimonials = [
   { name: 'Mariana Costa', role: 'Cliente recorrente', text: 'Os produtos chegam muito frescos e o processo de compra ficou simples e profissional.' },
@@ -393,10 +394,22 @@ const cepMessage = ref('');
 const findingCep = ref(false);
 const orderPlaced = ref(false);
 const submitting = ref(false);
+const loadingCatalog = ref(false);
+const catalogError = ref('');
+const products = ref([]);
 const cartStore = useCartStore();
 const { cart, cartCount, subtotal, shipping, total } = storeToRefs(cartStore);
 
-const filteredProducts = computed(() => filterProducts(products, search.value, selectedCategory.value));
+const categories = computed(() => {
+  const names = [...new Set(products.value.map((item) => item.category || 'Sem categoria'))];
+  return names.map((name) => ({
+    name,
+    description: categoryMeta[name]?.description || 'Produtos sincronizados do painel E-grocery.',
+    icon: categoryMeta[name]?.icon || '🛒',
+  }));
+});
+
+const filteredProducts = computed(() => filterProducts(products.value, search.value, selectedCategory.value));
 
 function formatPrice(value) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -465,6 +478,36 @@ async function lookupCep() {
     cepMessage.value = 'Não foi possível consultar o CEP agora. Preencha o endereço manualmente.';
   } finally {
     findingCep.value = false;
+  }
+}
+
+async function loadCatalogProducts() {
+  loadingCatalog.value = true;
+  catalogError.value = '';
+
+  try {
+    const { data } = await axios.get('/api/v1/catalog/products', {
+      params: { per_page: 500 },
+    });
+
+    const apiProducts = Array.isArray(data?.data) ? data.data : [];
+    products.value = apiProducts.map((item) => ({
+      id: item.id,
+      name: item.name,
+      category: item.category || 'Sem categoria',
+      price: Number(item.price || 0),
+      unit: item.unit || 'unidade',
+      badge: item.badge || 'Disponível',
+      image: item?.images?.[0] || '/images/logo-familia-mogi.svg',
+      description: item.shortDescription || item.description || 'Produto do catálogo integrado.',
+      stock: Number(item.stock || 0),
+    }));
+  } catch (error) {
+    catalogError.value = 'Não foi possível carregar os produtos do catálogo.';
+    products.value = [];
+    console.error(error);
+  } finally {
+    loadingCatalog.value = false;
   }
 }
 
@@ -561,11 +604,13 @@ async function submitCheckout() {
 }
 
 function runStoreTests() {
-  const filtered = filterProducts(products, 'cogumelo', 'Cogumelos');
-  const testCart = [
-    { product: products[0], quantity: 2 },
-    { product: products[2], quantity: 1 },
+  const sampleProducts = [
+    { id: 1, name: 'Shimeji', category: 'Cogumelos', description: 'Fresco', price: 19.9 },
+    { id: 2, name: 'Alface', category: 'Verduras', description: 'Orgânica', price: 5.9 },
+    { id: 3, name: 'Cenoura', category: 'Legumes', description: 'Selecionada', price: 2.9 },
   ];
+  const filtered = filterProducts(sampleProducts, 'cogumelo', 'Cogumelos');
+  const testCart = [{ product: sampleProducts[0], quantity: 2 }, { product: sampleProducts[2], quantity: 1 }];
   const testSubtotal = getSubtotal(testCart);
 
   console.assert(filtered.length >= 1, 'Deve filtrar produtos por busca e categoria');
@@ -590,7 +635,9 @@ const SectionTitle = {
   `,
 };
 
-onMounted(() => {
+onMounted(async () => {
+  await loadCatalogProducts();
+
   const params = new URLSearchParams(window.location.search);
   if (params.get('checkout') === '1' && cart.value.length > 0) {
     checkoutMessage.value = '';

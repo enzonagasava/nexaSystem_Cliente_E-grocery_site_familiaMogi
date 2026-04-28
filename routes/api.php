@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Catalog\ProductsController;
 use App\Http\Controllers\Integrations\EGroceryOrderExportController;
 use App\Http\Controllers\Integrations\EGroceryImageStorageController;
 use App\Http\Controllers\Integrations\EGroceryIntegrationHealthController;
@@ -69,6 +70,8 @@ Route::get('/cep/{cep}', function (string $cep) {
 
     return response()->json($result);
 });
+
+Route::get('/v1/catalog/products', [ProductsController::class, 'index']);
 
 Route::prefix('v1/integrations/e-grocery')->group(function () {
     Route::post('/webhooks', EGroceryWebhookController::class);
