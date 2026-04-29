@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300" role="img" aria-label="Família Mogi">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2f9c44" />
+      <stop offset="100%" stop-color="#9f6a1d" />
+    </linearGradient>
+  </defs>
+  <circle cx="150" cy="150" r="145" fill="#f8fbf1" stroke="url(#g)" stroke-width="10"/>
+  <text x="150" y="135" font-size="48" font-family="Verdana, sans-serif" font-weight="700" text-anchor="middle" fill="#2f9c44">FM</text>
+  <text x="150" y="175" font-size="20" font-family="Verdana, sans-serif" text-anchor="middle" fill="#7c5316">Família Mogi</text>
+</svg>
