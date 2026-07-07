@@ -24,7 +24,7 @@
         <button class="hidden rounded-full border border-[#9f6a1d] px-4 py-2 text-sm font-bold text-[#7c5316] transition hover:bg-[#9f6a1d] hover:text-white md:inline-flex">
           Catálogo
         </button>
-        <button class="rounded-full bg-[#2f9c44] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#267c37]" @click="$emit('open-cart')">
+        <button class="cursor-pointer rounded-full bg-[#2f9c44] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#267c37]" @click="$emit('open-cart')">
           Carrinho ({{ cartCount }})
         </button>
       </div>

@@ -431,7 +431,7 @@ export default function FamiliaMogiStore() {
             </button>
             <button
               onClick={() => setCartOpen(true)}
-              className="rounded-full bg-[#2f9c44] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#267c37]"
+              className="cursor-pointer rounded-full bg-[#2f9c44] px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#267c37]"
             >
               Carrinho ({cartCount})
             </button>

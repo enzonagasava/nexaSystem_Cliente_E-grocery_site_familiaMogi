@@ -1,12 +1,12 @@
 <template>
-  <div v-if="open" class="fixed inset-0 z-50 flex justify-end bg-black/35">
-    <div class="flex h-full w-full max-w-xl flex-col bg-[#fcfdf9] shadow-2xl">
+  <div v-if="open" class="fixed inset-0 z-50 flex justify-end bg-black/35" @click="$emit('close')">
+    <div class="flex h-full w-full max-w-xl flex-col bg-[#fcfdf9] shadow-2xl" @click="$emit('close')">
       <div class="flex items-center justify-between border-b border-[#d9dfcf] px-6 py-5">
         <div>
           <h3 class="text-2xl font-black text-[#2f4b1f]">Seu carrinho</h3>
           <p class="text-sm text-[#6f775f]">{{ cartCount }} item(ns) selecionado(s)</p>
         </div>
-        <button @click="$emit('close')" class="rounded-full border border-[#d9dfcf] px-4 py-2 text-sm font-bold text-[#55614a]">
+        <button @click="$emit('close')" class="cursor-pointer rounded-full border border-[#d9dfcf] px-4 py-2 text-sm font-bold text-[#55614a]">
           Fechar
         </button>
       </div>
@@ -59,13 +59,20 @@
           </div>
         </div>
 
-        <button
+<!--         <button
           v-if="showCheckout"
           @click="$emit('open-checkout')"
           class="mt-5 w-full rounded-full bg-[#2f9c44] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#267c37]"
         >
           Ir para checkout
+        </button> -->
+        <button
+          @click="$emit('enviar-pedido')"
+          class="mt-5 w-full rounded-full bg-[#2f9c44] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#267c37]"
+        >
+        Fazer pedido
         </button>
+        
       </div>
     </div>
   </div>

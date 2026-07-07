@@ -12,36 +12,26 @@
             </span>
 
             <h1 class="mt-6 max-w-3xl text-4xl font-black leading-tight tracking-tight text-[#2f4b1f] sm:text-5xl lg:text-6xl">
-              Frontend Família Mogi integrado com Laravel + Vue.
+              Família Mogi
             </h1>
-
-            <p class="mt-6 max-w-2xl text-lg leading-8 text-[#5a6550]">
-              Catálogo, carrinho e checkout prontos para consumir API e webhook do projeto E-grocery.
-            </p>
 
             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="#produtos" class="rounded-full bg-[#2f9c44] px-7 py-3.5 text-center text-base font-bold text-white shadow-lg shadow-green-200 transition hover:bg-[#267c37]">
                 Comprar agora
               </a>
-              <button @click="cartOpen = true" class="rounded-full border border-[#9f6a1d] bg-white px-7 py-3.5 text-base font-bold text-[#7c5316] transition hover:bg-[#f8f0da]">
+<!--               <button @click="cartOpen = true" class="rounded-full border border-[#9f6a1d] bg-white px-7 py-3.5 text-base font-bold text-[#7c5316] transition hover:bg-[#f8f0da]">
                 Abrir carrinho
-              </button>
+              </button> -->
             </div>
 
-            <p class="mt-6 text-sm text-[#6f775f]">
+<!--             <p class="mt-6 text-sm text-[#6f775f]">
               API: <strong>{{ apiBaseUrl || 'não configurada' }}</strong> | Webhook: <strong>{{ webhookUrl || 'não configurado' }}</strong>
-            </p>
+            </p> -->
           </div>
 
           <div class="rounded-[36px] border border-[#d8c48a] bg-white p-6 shadow-2xl shadow-[#dfe8d7]">
             <div class="rounded-[28px] bg-[linear-gradient(180deg,#f9fbf5_0%,#f1f7eb_100%)] p-8 text-center">
               <img :src="brand.logo" :alt="brand.name" class="mx-auto w-56 object-contain" />
-              <p class="mt-6 text-sm font-semibold uppercase tracking-[0.18em] text-[#9f6a1d]">
-                Loja online pronta para produção
-              </p>
-              <p class="mt-3 text-base leading-7 text-[#596550]">
-                Estrutura pronta para integração com pedido real no backend.
-              </p>
             </div>
           </div>
         </div>
@@ -341,7 +331,7 @@ const brand = {
   whatsapp: '(11) 99999-9999',
   email: 'contato@familiamogi.com.br',
   address: 'Mogi das Cruzes - SP',
-  logo: '/images/logo-familia-mogi.svg',
+  logo: '/images/logo-sem-fundo.png',
 };
 
 const categoryMeta = {
