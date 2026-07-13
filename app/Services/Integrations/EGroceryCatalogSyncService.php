@@ -4,7 +4,6 @@ namespace App\Services\Integrations;
 
 use App\Models\EGroceryAd;
 use App\Models\EGroceryImage;
-use App\Models\EGroceryProduct;
 use Carbon\CarbonImmutable;
 
 class EGroceryCatalogSyncService
@@ -57,20 +56,6 @@ class EGroceryCatalogSyncService
         if ($sku === '') {
             return;
         }
-
-        EGroceryProduct::query()->updateOrCreate(
-            ['external_sku' => $sku],
-            [
-                'name' => $data['name'] ?? null,
-                'category' => $data['category'] ?? null,
-                'price' => $this->asFloatOrNull($data['price'] ?? null),
-                'stock' => $this->asIntOrNull($data['stock'] ?? null),
-                'status' => $data['status'] ?? null,
-                'external_image_id' => $data['image_id'] ?? null,
-                'source_updated_at' => $this->asDateTimeOrNull($data['updated_at'] ?? null),
-                'payload' => $data,
-            ]
-        );
     }
 
     public function upsertImage(array $data, ?string $fallbackExternalImageId = null): void

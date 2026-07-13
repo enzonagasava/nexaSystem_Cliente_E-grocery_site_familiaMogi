@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Catalog;
 
 use App\Http\Controllers\Controller;
-use App\Models\EGroceryProduct;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\EGroceryAd;
 
 
 class ProductsController extends Controller
@@ -17,7 +17,7 @@ class ProductsController extends Controller
         $perPage = min(max((int) $request->query('per_page', 100), 1), 500);
 
 
-        $query = EGroceryProduct::query()
+        $query = EGroceryAd::query()
         ->from('e_grocery_ads as p')
         ->select([
             'p.id',
@@ -37,7 +37,7 @@ class ProductsController extends Controller
 
             return [
                 'id' => $product->id,
-                'sku' => $product->external_sku,
+                'sku' => $product->external_sku ,
                 'name' => $product->title,
                 'category' => $product->category ?: 'Sem categoria',
                 'price' => $product->price !== null ? (float) $product->price : 0.0,

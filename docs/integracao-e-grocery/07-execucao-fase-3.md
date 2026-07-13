@@ -21,7 +21,6 @@ Persistência local criada:
 - `database/migrations/2026_04_27_110200_create_e_grocery_products_table.php`.
 - Model: `app/Models/EGroceryAd.php`.
 - Model: `app/Models/EGroceryImage.php`.
-- Model: `app/Models/EGroceryProduct.php`.
 
 ## 3. Comando de sync (via container)
 

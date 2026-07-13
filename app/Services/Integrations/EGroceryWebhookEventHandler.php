@@ -3,7 +3,6 @@
 namespace App\Services\Integrations;
 
 use App\Models\EGroceryImage;
-use App\Models\EGroceryProduct;
 use App\Models\IntegrationEvent;
 use Illuminate\Support\Facades\Log;
 
@@ -86,10 +85,5 @@ class EGroceryWebhookEventHandler
             $this->catalogSync->upsertImage($imagePayload, $imageId);
             return;
         }
-
-        EGroceryProduct::query()
-            ->where('external_sku', (string) ($data['sku'] ?? ''))
-            ->update(['external_image_id' => $imageId]);
-    }
 }
 

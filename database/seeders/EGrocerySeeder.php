@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\EGroceryProduct;
 use App\Models\EGroceryImage;
 use App\Models\EGroceryAd;
 use Illuminate\Database\Seeder;
@@ -52,19 +51,6 @@ class EGrocerySeeder extends Seeder
                 'checksum'            => md5($externalImageId . $faker->randomNumber()),
                 'source_updated_at'   => Carbon::now(),
                 'payload'             => ['source' => 'faker', 'alt' => $product['name']],
-            ]);
-
-            // Cria o produto vinculado à imagem
-            EGroceryProduct::create([
-                'external_sku'        => 'SKU_' . strtoupper(uniqid()),
-                'name'                => $product['name'],
-                'category'            => $product['category'],
-                'price'               => $faker->randomFloat(2, 0.99, 25.00),
-                'stock'               => $faker->numberBetween(0, 150),
-                'status'              => $faker->randomElement(['active', 'inactive']),
-                'external_image_id'   => $externalImageId,
-                'source_updated_at'   => Carbon::now(),
-                'payload'             => ['unit' => $faker->randomElement(['kg', 'un', 'bunch', 'pack'])],
             ]);
         }
 
