@@ -44,12 +44,15 @@
           description="A estrutura da loja separa os principais grupos da operação e facilita tanto compras avulsas quanto pedidos maiores."
         />
 
-        <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div v-if="semCategoria === false" class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <div v-for="item in categories" :key="item.name" class="group rounded-[30px] border border-[#d9dfcf] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
             <div class="mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-[#eef7e7] text-3xl ring-1 ring-[#d9dfcf]">{{ item.icon }}</div>
             <h3 class="text-2xl font-black text-[#2f4b1f]">{{ item.name }}</h3>
             <p class="mt-3 text-sm leading-7 text-[#5f6b54]">{{ item.description }}</p>
           </div>
+        </div>
+
+        <div v-else="semCategoria === true" >
         </div>
       </section>
 
@@ -389,6 +392,8 @@ const catalogError = ref('');
 const products = ref([]);
 const cartStore = useCartStore();
 const { cart, cartCount, subtotal, shipping, total } = storeToRefs(cartStore);
+const semCategoria = ref(true);
+
 
 const categories = computed(() => {
   const names = [...new Set(products.value.map((item) => item.category || 'Sem categoria'))];
