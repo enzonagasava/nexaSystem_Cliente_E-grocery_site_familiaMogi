@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EGroceryAd extends Model
 {
@@ -18,6 +19,7 @@ class EGroceryAd extends Model
         'ends_at',
         'source_updated_at',
         'payload',
+        'category',
     ];
 
     protected $casts = [
@@ -26,5 +28,13 @@ class EGroceryAd extends Model
         'source_updated_at' => 'datetime',
         'payload' => 'array',
     ];
+
+  public function images(): HasMany
+    {
+        return $this->hasMany(EGroceryImage::class,
+            'product_id',
+            'id'
+        );
+    }
 }
 

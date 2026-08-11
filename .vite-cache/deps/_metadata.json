@@ -1,31 +1,31 @@
 {
-  "hash": "a24d4bc2",
+  "hash": "ac590cb3",
   "configHash": "0e9e511f",
-  "lockfileHash": "6134aff5",
-  "browserHash": "e4ec9dac",
+  "lockfileHash": "d35f88e6",
+  "browserHash": "8ddeec50",
   "optimized": {
     "axios": {
       "src": "../../node_modules/axios/index.js",
       "file": "axios.js",
-      "fileHash": "09ca9979",
+      "fileHash": "4334da06",
       "needsInterop": false
     },
     "maska/vue": {
       "src": "../../node_modules/maska/dist/vue.mjs",
       "file": "maska_vue.js",
-      "fileHash": "aca3c24a",
+      "fileHash": "799c9ab5",
       "needsInterop": false
     },
     "pinia": {
       "src": "../../node_modules/pinia/dist/pinia.mjs",
       "file": "pinia.js",
-      "fileHash": "8d08f6f5",
+      "fileHash": "72ced54b",
       "needsInterop": false
     },
     "vue": {
       "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "b25c3ace",
+      "fileHash": "988c564d",
       "needsInterop": false
     }
   },

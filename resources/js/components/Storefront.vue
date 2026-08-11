@@ -44,15 +44,12 @@
           description="A estrutura da loja separa os principais grupos da operação e facilita tanto compras avulsas quanto pedidos maiores."
         />
 
-        <div v-if="semCategoria === false" class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           <div v-for="item in categories" :key="item.name" class="group rounded-[30px] border border-[#d9dfcf] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
             <div class="mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-[#eef7e7] text-3xl ring-1 ring-[#d9dfcf]">{{ item.icon }}</div>
             <h3 class="text-2xl font-black text-[#2f4b1f]">{{ item.name }}</h3>
             <p class="mt-3 text-sm leading-7 text-[#5f6b54]">{{ item.description }}</p>
           </div>
-        </div>
-
-        <div v-else="semCategoria === true" >
         </div>
       </section>
 
@@ -97,7 +94,7 @@
           <div v-else class="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             <article v-for="product in filteredProducts" :key="product.id" class="overflow-hidden rounded-[30px] border border-[#d9dfcf] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
               <a :href="`/produtos/${product.id}`" class="relative block">
-                <img :src="product.image" :alt="product.name" class="h-64 w-full object-cover" />
+                <img v-bind:src="`${product.image}`" :alt="product.name" class="h-64 w-full object-cover" />
                 <span class="absolute left-4 top-4 rounded-full bg-[#f6ecd2] px-3 py-1 text-xs font-black text-[#8f5b11] shadow-sm">
                   {{ product.badge }}
                 </span>
@@ -392,8 +389,6 @@ const catalogError = ref('');
 const products = ref([]);
 const cartStore = useCartStore();
 const { cart, cartCount, subtotal, shipping, total } = storeToRefs(cartStore);
-const semCategoria = ref(true);
-
 
 const categories = computed(() => {
   const names = [...new Set(products.value.map((item) => item.category || 'Sem categoria'))];

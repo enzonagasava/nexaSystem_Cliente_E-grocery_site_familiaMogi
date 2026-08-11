@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('e_grocery_images', function (Blueprint $table) {
             $table->id();
+            $table->string('product_id');
             $table->string('external_image_id')->unique();
             $table->string('storage_key')->nullable();
             $table->text('url')->nullable();

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\EGroceryAd;
+use App\Models\EGroceryImage;
 
 
 class ProductsController extends Controller
@@ -25,6 +26,7 @@ class ProductsController extends Controller
             'p.description',
             'p.status',
             'p.payload',
+            'p.category',
         ])
         ->where('p.status', 'active')
         ->whereNotNull('p.title')
@@ -47,27 +49,26 @@ class ProductsController extends Controller
                 'badge' => $payload['badge'] ?? 'Disponível',
                 'shortDescription' => $payload['shortDescription'] ?? ($payload['short_description'] ?? 'Produto sincronizado do painel E-grocery.'),
                 'description' => $payload['description'] ?? 'Produto sincronizado automaticamente pelo catálogo integrado.',
-                'images' => $this->resolveImages($payload, null),
+                'images' => $this->resolveImages($product->id),
             ];
         });
 
         return response()->json($products);
     }
 
-    private function resolveImages(array $payload, ?string $imageUrl): array
+    private function resolveImages(int $productId)
     {
-        // 1. Tenta extrair do payload
-        if (isset($payload['images']) && is_array($payload['images']) && $payload['images'] !== []) {
-            return array_values(array_filter($payload['images'], fn ($url) => is_string($url) && trim($url) !== ''));
+        if(isset($productId)){
+              $product = EGroceryAd::findOrFail($productId);
+
+                return $product->images
+                    ->pluck('url')
+                    ->values()
+                    ->toArray();
+        } else {
+            return ['/images/logo-familia-mogi.svg'];
         }
 
-        // 2. Se não houver no payload, usa o $imageUrl (se não for nulo)
-        if ($imageUrl !== null && trim($imageUrl) !== '') {
-            return [$imageUrl];
-        }
-
-        // 3. Fallback padrão
-        return ['/images/logo-familia-mogi.svg'];
     }
 }
 

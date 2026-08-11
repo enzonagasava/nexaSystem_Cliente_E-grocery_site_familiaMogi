@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('ends_at')->nullable();
             $table->timestamp('source_updated_at')->nullable()->index();
             $table->json('payload');
+            $table->string('category');
             $table->timestamps();
         });
     }
