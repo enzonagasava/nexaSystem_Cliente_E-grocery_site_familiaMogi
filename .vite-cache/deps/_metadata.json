@@ -1,31 +1,37 @@
 {
-  "hash": "ac590cb3",
+  "hash": "501c9c00",
   "configHash": "0e9e511f",
-  "lockfileHash": "d35f88e6",
-  "browserHash": "8ddeec50",
+  "lockfileHash": "b1fa96c6",
+  "browserHash": "bc42146f",
   "optimized": {
     "axios": {
       "src": "../../node_modules/axios/index.js",
       "file": "axios.js",
-      "fileHash": "4334da06",
+      "fileHash": "408f4a72",
       "needsInterop": false
     },
     "maska/vue": {
       "src": "../../node_modules/maska/dist/vue.mjs",
       "file": "maska_vue.js",
-      "fileHash": "799c9ab5",
+      "fileHash": "bab5511d",
       "needsInterop": false
     },
     "pinia": {
       "src": "../../node_modules/pinia/dist/pinia.mjs",
       "file": "pinia.js",
-      "fileHash": "72ced54b",
+      "fileHash": "a5b687e0",
       "needsInterop": false
     },
     "vue": {
       "src": "../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "988c564d",
+      "fileHash": "43478591",
+      "needsInterop": false
+    },
+    "vue3-carousel": {
+      "src": "../../node_modules/vue3-carousel/dist/carousel.mjs",
+      "file": "vue3-carousel.js",
+      "fileHash": "3441ec1d",
       "needsInterop": false
     }
   },

@@ -49,10 +49,11 @@
             <span>Subtotal</span>
             <span class="font-bold">{{ formatPrice(subtotal) }}</span>
           </div>
-          <div class="flex items-center justify-between text-[#55614a]">
+          <!--<div class="flex items-center justify-between text-[#55614a]">
             <span>Frete</span>
             <span class="font-bold">{{ shipping === 0 ? 'Grátis' : formatPrice(shipping) }}</span>
           </div>
+          -->
           <div class="flex items-center justify-between border-t border-[#edf1e8] pt-3 text-base font-black text-[#2f4b1f]">
             <span>Total</span>
             <span>{{ formatPrice(total) }}</span>

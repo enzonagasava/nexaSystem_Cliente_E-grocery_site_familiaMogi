@@ -17,7 +17,7 @@
 
             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
               <a href="#produtos" class="rounded-full bg-[#2f9c44] px-7 py-3.5 text-center text-base font-bold text-white shadow-lg shadow-green-200 transition hover:bg-[#267c37]">
-                Comprar agora
+                Ver Catálogo
               </a>
 <!--               <button @click="cartOpen = true" class="rounded-full border border-[#9f6a1d] bg-white px-7 py-3.5 text-base font-bold text-[#7c5316] transition hover:bg-[#f8f0da]">
                 Abrir carrinho
@@ -31,7 +31,21 @@
 
           <div class="rounded-[36px] border border-[#d8c48a] bg-white p-6 shadow-2xl shadow-[#dfe8d7]">
             <div class="rounded-[28px] bg-[linear-gradient(180deg,#f9fbf5_0%,#f1f7eb_100%)] p-8 text-center">
-              <img :src="brand.logo" :alt="brand.name" class="mx-auto w-56 object-contain" />
+               <Carousel v-bind="carouselConfig">
+                <Slide
+                        v-for="(carousel, index) in carrossel"
+                        :key="index"
+                    >
+                        <img
+                            :src="carousel.image"
+                            :alt="carousel.alt"
+                        />
+                    </Slide>
+                  <template #addons>
+                    <Navigation />
+                    <Pagination />
+                  </template>
+              </Carousel>
             </div>
           </div>
         </div>
@@ -104,8 +118,8 @@
                 <a :href="`/produtos/${product.id}`" class="mt-2 block text-2xl font-black text-[#2f4b1f] hover:text-[#2f9c44]">{{ product.name }}</a>
                 <p class="mt-3 text-sm leading-6 text-[#64705a]">{{ product.description }}</p>
                 <div class="mt-4 flex items-end gap-2">
-                  <span class="text-2xl font-black text-[#3d2d13]">{{ formatPrice(product.price) }}</span>
-                  <span class="pb-1 text-sm text-[#717a66]">/ {{ product.unit }}</span>
+                  <span class="text-2xl font-black text-[#3d2d13]">{{ product.price ? formatPrice(product.price) : 'Consultar preço'}}</span>
+                  <span class="pb-1 text-sm text-[#717a66]">/ {{ product.price ? product.unit : '' }}</span>
                 </div>
                 <a :href="`/produtos/${product.id}`" class="mt-4 block w-full rounded-full border border-[#9f6a1d] bg-[#fff7df] px-4 py-3 text-center text-sm font-bold text-[#7c5316] transition hover:bg-[#f6ecd2]">
                   Ver detalhes
@@ -138,44 +152,7 @@
       </section>
     </main>
 
-    <footer v-if="!checkoutOpen" id="contato" class="border-t border-[#d9dfcf] bg-[#f1f5ea]">
-      <div class="mx-auto grid max-w-7xl gap-10 px-6 py-12 lg:grid-cols-[1.1fr_0.9fr_0.9fr] lg:px-8">
-        <div>
-          <div class="flex items-center gap-4">
-            <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#d8c48a] bg-white shadow-sm">
-              <img :src="brand.logo" :alt="brand.name" class="h-full w-full object-contain p-1" />
-            </div>
-            <div>
-              <p class="text-2xl font-black text-[#2f9c44]">{{ brand.name }}</p>
-              <p class="text-sm text-[#66715b]">{{ brand.slogan }}</p>
-            </div>
-          </div>
-          <p class="mt-5 max-w-xl text-sm leading-7 text-[#5f6b54]">
-            Frontend em Laravel + Vue pronto para integração com APIs, webhook e gateway de pagamento.
-          </p>
-        </div>
-
-        <div>
-          <p class="text-sm font-black uppercase tracking-[0.2em] text-[#9f6a1d]">Mapa do site</p>
-          <div class="mt-4 space-y-3 text-sm font-semibold text-[#55614a]">
-            <a href="#inicio" class="block transition hover:text-[#2f9c44]">Início</a>
-            <a href="#categorias" class="block transition hover:text-[#2f9c44]">Categorias</a>
-            <a href="#produtos" class="block transition hover:text-[#2f9c44]">Loja</a>
-            <a href="#depoimentos" class="block transition hover:text-[#2f9c44]">Depoimentos</a>
-          </div>
-        </div>
-
-        <div>
-          <p class="text-sm font-black uppercase tracking-[0.2em] text-[#9f6a1d]">Contato</p>
-          <div class="mt-4 space-y-3 text-sm text-[#55614a]">
-            <p>{{ brand.whatsapp }}</p>
-            <p>{{ brand.email }}</p>
-            <p>{{ brand.address }}</p>
-            <p>Seg a sáb • 7h às 18h</p>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter :brand="brand" :cart-count="cartCount" @open-cart="onOpenCart"/>
 
     <CartDrawer
       :open="cartOpen"
@@ -318,7 +295,11 @@ import axios from 'axios';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '../stores/cartStore';
 import SiteHeader from './SiteHeader.vue';
+import SiteFooter from './SiteFooter.vue';
 import CartDrawer from './CartDrawer.vue';
+
+import 'vue3-carousel/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 
 const apiBaseUrl = import.meta.env.VITE_EGROCERY_API_URL || '';
 const checkoutEndpoint = import.meta.env.VITE_EGROCERY_CHECKOUT_ENDPOINT || '/api/v1/integrations/e-grocery/orders';
@@ -333,6 +314,31 @@ const brand = {
   address: 'Mogi das Cruzes - SP',
   logo: '/images/logo-sem-fundo.png',
 };
+
+const carrossel = [
+    {
+        image: "/images/carrossel/image2.png",
+        alt: "carrossel 2"
+    },
+    {
+        image: "/images/carrossel/image3.jpg",
+        alt: "carrossel 3"
+    },
+    {
+        image: "/images/carrossel/image4.jpg",
+        alt: "carrossel 4"
+    },
+    {
+        image: "/images/carrossel/image5.jpg",
+        alt: "carrossel 5"
+    }
+]
+
+const carouselConfig = {
+  height: 300,
+  itemsToShow: 1,
+  wrapAround: true
+}
 
 const categoryMeta = {
   Verduras: { description: 'Folhas frescas e selecionadas para consumo diário.', icon: '🥬' },
@@ -638,4 +644,13 @@ onMounted(async () => {
 
   runStoreTests();
 });
+
 </script>
+<style>
+img {
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>

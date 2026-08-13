@@ -41,12 +41,10 @@
           <aside class="rounded-[36px] border border-[#d9dfcf] bg-white p-6 shadow-xl shadow-[#dfe8d7] lg:sticky lg:top-28 lg:p-8">
             <p class="text-sm font-black uppercase tracking-[0.22em] text-[#2f9c44]">{{ product.category }}</p>
             <h1 class="mt-3 text-4xl font-black leading-tight tracking-tight text-[#2f4b1f] lg:text-5xl">{{ product.name }}</h1>
-            <p class="mt-4 text-base leading-8 text-[#5f6b54]">{{ product.shortDescription }}</p>
-
             <div class="mt-6 flex flex-wrap items-end gap-3 border-y border-[#edf1e8] py-6">
               <div>
-                <p class="text-sm font-bold text-[#6f775f]">Preço</p>
-                <p class="text-4xl font-black text-[#3d2d13]">{{ formatPrice(product.price) }}</p>
+                <p class="text-sm font-bold text-[#6f775f]">{{product.price ? Preço : ''}}</p>
+                <p class="text-4xl font-black text-[#3d2d13]">{{ product.price ? formatPrice(product.price) : 'Consultar Preço' }}</p>
               </div>
               <span class="pb-2 text-base font-semibold text-[#717a66]">/ {{ product.unit }}</span>
             </div>
@@ -61,7 +59,7 @@
 
               <div>
                 <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">Estoque</span>
-                <div class="rounded-2xl bg-[#eef8f0] px-4 py-3 text-sm font-bold text-[#246b34]">{{ product.stock }} disponíveis</div>
+                <div class="rounded-2xl bg-[#eef8f0] px-4 py-3 text-sm font-bold text-[#246b34]">{{product.stock ? product.stock + " disponiveis" : 'Sob Consulta' }}</div>
               </div>
             </div>
 
@@ -106,7 +104,6 @@
           <h2 class="mt-2 text-3xl font-black text-[#2f4b1f]">{{ product.name }} selecionado pela Família Mogi</h2>
           <div class="mt-5 space-y-4 text-base leading-8 text-[#5f6b54]">
             <p>{{ product.description }}</p>
-            <p>Esta página prioriza foto grande, preço claro, compra rápida e dados de apoio para conversão.</p>
           </div>
         </div>
       </div>
@@ -140,6 +137,8 @@
       </div>
     </section>
 
+    <SiteFooter :brand="brand" :cart-count="cartCount" @open-cart="onOpenCart"/>
+
     <CartDrawer
       :open="cartOpen"
       :cart-count="cartCount"
@@ -162,6 +161,7 @@ import axios from 'axios';
 import { storeToRefs } from 'pinia';
 import { useCartStore } from '../stores/cartStore';
 import SiteHeader from './SiteHeader.vue';
+import SiteFooter from './SiteFooter.vue';
 import CartDrawer from './CartDrawer.vue';
 
 const brand = {
@@ -169,7 +169,7 @@ const brand = {
   slogan: 'Produtos frescos direto do produtor para sua casa',
   whatsapp: '(11) 99999-9999',
   email: 'contato@familiamogi.com.br',
-  logo: '/images/logo-familia-mogi.svg',
+  logo: '/images/logo-sem-fundo.png',
 };
 
 const pathParts = window.location.pathname.split('/').filter(Boolean);
@@ -193,9 +193,8 @@ const productDetails = computed(() => {
   return [
     { label: 'Categoria', value: product.value.category },
     { label: 'Unidade', value: product.value.unit },
-    { label: 'Disponibilidade', value: `${product.value.stock} unidades` },
+    { label: 'Disponibilidade', value: product.value.stock ? `${product.value.stock}  unidades` : 'Sob Consulta' },
     { label: 'Origem', value: 'Mogi das Cruzes - SP' },
-    { label: 'Indicação', value: 'Risotos, massas e refogados' }
   ];
 });
 
