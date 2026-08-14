@@ -25,7 +25,7 @@
                   <div>
                     <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#2f9c44]">{{ item.product.category }}</p>
                     <h4 class="mt-1 text-lg font-black text-[#2f4b1f]">{{ item.product.name }}</h4>
-                    <p class="mt-1 text-sm text-[#6f775f]">{{ formatPrice(item.product.price) }} / {{ item.product.unit }}</p>
+                    <p class="mt-1 text-sm text-[#6f775f]">{{ item.quantity }} unidade(s)</p>
                   </div>
                   <button @click="$emit('remove-item', item.product.id)" class="text-sm font-bold text-[#9f6a1d]">Remover</button>
                 </div>
@@ -35,7 +35,7 @@
                     <span class="min-w-10 text-center text-sm font-bold text-[#2f4b1f]">{{ item.quantity }}</span>
                     <button @click="$emit('update-quantity', item.product.id, 1)" class="px-3 py-1.5 text-sm font-bold text-[#5b684f] hover:text-[#2f9c44]">+</button>
                   </div>
-                  <p class="text-lg font-black text-[#3d2d13]">{{ formatPrice(item.product.price * item.quantity) }}</p>
+                  <p class="text-lg font-black text-[#3d2d13]">Sob Consulta</p>
                 </div>
               </div>
             </div>
@@ -46,21 +46,21 @@
       <div class="border-t border-[#d9dfcf] bg-white px-6 py-5">
         <div class="space-y-3 text-sm">
           <div class="flex items-center justify-between text-[#55614a]">
-            <span>Subtotal</span>
-            <span class="font-bold">{{ formatPrice(subtotal) }}</span>
+            <!-- <span>Subtotal</span> -->
+            <!-- <span class="font-bold">{{ formatPrice(subtotal) }}</span> -->
           </div>
           <!--<div class="flex items-center justify-between text-[#55614a]">
             <span>Frete</span>
             <span class="font-bold">{{ shipping === 0 ? 'Grátis' : formatPrice(shipping) }}</span>
           </div>
           -->
-          <div class="flex items-center justify-between border-t border-[#edf1e8] pt-3 text-base font-black text-[#2f4b1f]">
+          <!-- <div class="flex items-center justify-between border-t border-[#edf1e8] pt-3 text-base font-black text-[#2f4b1f]">
             <span>Total</span>
             <span>{{ formatPrice(total) }}</span>
-          </div>
+          </div> -->
         </div>
 
-<!--         <button
+        <!--  <button
           v-if="showCheckout"
           @click="$emit('open-checkout')"
           class="mt-5 w-full rounded-full bg-[#2f9c44] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#267c37]"
@@ -68,7 +68,7 @@
           Ir para checkout
         </button> -->
         <button
-          @click="$emit('enviar-pedido')"
+          @click="enviarPedidoWhatsApp"
           class="mt-5 w-full rounded-full bg-[#2f9c44] px-4 py-3 text-sm font-bold text-white transition hover:bg-[#267c37]"
         >
         Fazer pedido
@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   open: { type: Boolean, required: true },
   cartCount: { type: Number, required: true },
   cart: { type: Array, required: true },
@@ -95,5 +95,31 @@ defineEmits(['close', 'remove-item', 'update-quantity', 'open-checkout']);
 
 function getImage(item) {
   return item?.product?.image || item?.product?.images?.[0] || '';
+}
+
+function enviarPedidoWhatsApp() {
+    const telefone = '5511941560613';
+
+    const produtos = props.cart.map(item => {
+        const nome = item.product.name;
+        const quantidade = item.quantity;
+        const unidade = item.product.unit;
+
+        return `• ${nome} — ${quantidade} ${unidade}`;
+    });
+
+    const mensagem = [
+        'Olá! Gostaria de fazer um pedido:',
+        '',
+        ...produtos,
+        '',
+        'Os valores podem ser informados por vocês.',
+        '',
+        'Aguardo a confirmação do pedido.'
+    ].join('\n');
+
+    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+
+    window.open(url, '_blank');
 }
 </script>
