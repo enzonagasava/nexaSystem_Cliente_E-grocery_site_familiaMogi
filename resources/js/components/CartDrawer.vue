@@ -1,6 +1,6 @@
 <template>
   <div v-if="open" class="fixed inset-0 z-50 flex justify-end bg-black/35" @click="$emit('close')">
-    <div class="flex h-full w-full max-w-xl flex-col bg-[#fcfdf9] shadow-2xl" @click.stop>
+    <div class="flex h-full w-full max-w-xl flex-col bg-[#fcfdf9] shadow-2xl" @click="$emit('close')">
       <div class="flex items-center justify-between border-b border-[#d9dfcf] px-6 py-5">
         <div>
           <h3 class="text-2xl font-black text-[#2f4b1f]">Seu carrinho</h3>

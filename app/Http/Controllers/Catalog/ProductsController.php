@@ -48,7 +48,7 @@ class ProductsController extends Controller
                 'unit' => $payload['unit'] ?? 'unidade',
                 'badge' => $payload['badge'] ?? 'Disponível',
                 'shortDescription' => $payload['shortDescription'] ?? ($payload['short_description'] ?? 'Produto sincronizado do painel E-grocery.'),
-                'description' => $product->description ?? 'Produto sincronizado automaticamente pelo catálogo integrado.',
+                'description' => $payload['description'] ?? 'Produto sincronizado automaticamente pelo catálogo integrado.',
                 'images' => $this->resolveImages($product->id),
             ];
         });
