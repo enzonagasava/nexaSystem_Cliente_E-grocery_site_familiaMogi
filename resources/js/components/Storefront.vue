@@ -42,7 +42,6 @@
                         />
                     </Slide>
                   <template #addons>
-                    <Navigation />
                     <Pagination />
                   </template>
               </Carousel>
@@ -309,8 +308,8 @@ const webhookToken = import.meta.env.VITE_EGROCERY_WEBHOOK_TOKEN || '';
 const brand = {
   name: 'Família Mogi',
   slogan: 'Produtos frescos direto do produtor para sua casa',
-  whatsapp: '(11) 99999-9999',
-  email: 'contato@familiamogi.com.br',
+  whatsapp: '(11) 94156-0613',
+  email: 'enzonagasava@gmail.com',
   address: 'Mogi das Cruzes - SP',
   logo: '/images/logo-sem-fundo.png',
 };
@@ -337,7 +336,8 @@ const carrossel = [
 const carouselConfig = {
   height: 300,
   itemsToShow: 1,
-  wrapAround: true
+  wrapAround: true,
+  autoplay: 2000
 }
 
 const categoryMeta = {
@@ -647,10 +647,13 @@ onMounted(async () => {
 
 </script>
 <style>
-img {
-  border-radius: 8px;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.carousel__pagination-button {
+  height: 5px;
+  width: 5px;
+  border-radius: 5px;
+  background-color: white;
+}
+.carousel__pagination-button--active {
+  background-color: #267c37;
 }
 </style>

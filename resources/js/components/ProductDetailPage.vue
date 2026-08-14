@@ -167,10 +167,12 @@ import CartDrawer from './CartDrawer.vue';
 const brand = {
   name: 'Família Mogi',
   slogan: 'Produtos frescos direto do produtor para sua casa',
-  whatsapp: '(11) 99999-9999',
-  email: 'contato@familiamogi.com.br',
+  whatsapp: '(11) 94156-0613',
+  email: 'enzonagasava@gmail.com',
+  address: 'Mogi das Cruzes - SP',
   logo: '/images/logo-sem-fundo.png',
 };
+
 
 const pathParts = window.location.pathname.split('/').filter(Boolean);
 const productId = Number(pathParts[pathParts.length - 1]);

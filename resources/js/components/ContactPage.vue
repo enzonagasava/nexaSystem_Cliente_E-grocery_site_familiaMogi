@@ -16,56 +16,126 @@
 
     <section class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
       <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-        <form class="rounded-[36px] border border-[#d9dfcf] bg-white p-6 shadow-xl shadow-[#dfe8d7] lg:p-8" @submit.prevent="submitContact">
-          <div class="flex items-start justify-between gap-4">
+    <form @submit.prevent="submitContact"
+        class="rounded-[36px] border border-[#d9dfcf] bg-white p-6 shadow-xl shadow-[#dfe8d7] lg:p-8"
+    >
+        <div class="flex items-start justify-between gap-4">
             <div>
-              <p class="text-sm font-black uppercase tracking-[0.22em] text-[#9f6a1d]">Mensagem</p>
-              <h2 class="mt-2 text-3xl font-black text-[#2f4b1f]">Envie sua solicitação</h2>
-              <p class="mt-3 text-sm leading-7 text-[#6f775f]">Preencha os dados abaixo e retornaremos pelo melhor canal informado.</p>
+                <p class="text-sm font-black uppercase tracking-[0.22em] text-[#9f6a1d]"> Mensagem </p>
+                <h2 class="mt-2 text-3xl font-black text-[#2f4b1f]">Envie sua solicitação</h2>
+                <p class="mt-3 text-sm leading-7 text-[#6f775f]">Preencha os dados abaixo e retornaremos pelo melhor canal informado.</p>
             </div>
-            <span class="hidden rounded-full bg-[#eef8f0] px-4 py-2 text-xs font-black text-[#246b34] sm:inline-flex">Resposta rápida</span>
-          </div>
+            <span class="hidden rounded-full bg-[#eef8f0] px-4 py-2 text-xs font-black text-[#246b34] sm:inline-flex">
+                Resposta rápida
+            </span>
+        </div>
 
-          <div class="mt-8 grid gap-5 sm:grid-cols-2">
+        <div class="mt-8 grid gap-5 sm:grid-cols-2">
             <label class="block">
-              <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">Nome completo</span>
-              <input v-model="form.name" type="text" placeholder="Seu nome" class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white" />
+                <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">
+                    Nome completo
+                </span>
+                <input
+                    v-model="form.name"
+                    name="nome"
+                    type="text"
+                    required
+                    placeholder="Seu nome"
+                    class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white"
+                />
             </label>
 
             <label class="block">
-              <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">Telefone / WhatsApp</span>
-              <input v-model="form.phone" type="text" inputmode="tel" placeholder="(11) 99999-9999" class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white" @input="onPhoneInput" />
+                <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">
+                    Telefone / WhatsApp
+                </span>
+                <input
+                    v-model="form.phone"
+                    name="Telefone"
+                    type="tel"
+                    inputmode="tel"
+                    required
+                    placeholder="(11) 99999-9999"
+                    class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white"
+                    @input="onPhoneInput"
+                />
             </label>
 
             <label class="block sm:col-span-2">
-              <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">E-mail</span>
-              <input v-model="form.email" type="email" placeholder="voce@email.com" class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white" />
+                <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">
+                    E-mail
+                </span>
+                <input
+                    v-model="form.email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="voce@email.com"
+                    class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white"
+                />
             </label>
 
             <label class="block sm:col-span-2">
-              <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">Assunto</span>
-              <select v-model="form.subject" class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition focus:border-[#2f9c44] focus:bg-white">
-                <option value="Pedido">Pedido</option>
-                <option value="Entrega">Entrega</option>
-                <option value="Cestas semanais">Cestas semanais</option>
-                <option value="Compra para restaurante">Compra para restaurante</option>
-                <option value="Outro assunto">Outro assunto</option>
-              </select>
+                <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">
+                    Assunto
+                </span>
+                <select
+                    v-model="form.subject"
+                    name="assunto"
+                    required
+                    class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition focus:border-[#2f9c44] focus:bg-white"
+                >
+                    <option value="Pedido">Pedido</option>
+                    <option value="Entrega">Entrega</option>
+                    <option value="Cestas semanais">Cestas semanais</option>
+                    <option value="Compra para restaurante">
+                        Compra para restaurante
+                    </option>
+                    <option value="Outro assunto">
+                        Outro assunto
+                    </option>
+                </select>
             </label>
 
             <label class="block sm:col-span-2">
-              <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">Mensagem</span>
-              <textarea v-model="form.message" rows="6" placeholder="Conte como podemos ajudar..." class="w-full resize-none rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white" />
+                <span class="mb-2 block text-sm font-bold text-[#2f4b1f]">
+                    Mensagem
+                </span>
+
+                <textarea
+                    v-model="form.message"
+                    name="mensagem"
+                    required
+                    rows="6"
+                    placeholder="Conte como podemos ajudar..."
+                    class="w-full resize-none rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white"
+                ></textarea>
             </label>
-          </div>
+        </div>
+        <div v-if="feedback" class="mt-5 rounded-2xl border px-4 py-3 text-sm font-semibold" :class="feedbackType === 'success' ? 'border-[#cfe8d5] bg-[#eef8f0] text-[#246b34]' : 'border-[#eed8b0] bg-[#fff7e7] text-[#7f5518]'">{{ feedback }}
+        </div>
 
-          <div v-if="feedback" class="mt-5 rounded-2xl border px-4 py-3 text-sm font-semibold" :class="feedbackType === 'success' ? 'border-[#cfe8d5] bg-[#eef8f0] text-[#246b34]' : 'border-[#eed8b0] bg-[#fff7e7] text-[#7f5518]'">{{ feedback }}</div>
+        <input type="hidden" name="_subject" value="Nova solicitação - Hortifruti">
+        <input type="hidden" name="_captcha" value="false">
 
-          <div class="mt-7 flex flex-col gap-3 sm:flex-row">
-            <button type="submit" class="rounded-full bg-[#2f9c44] px-7 py-3.5 text-sm font-black text-white shadow-lg shadow-green-100 transition hover:bg-[#267c37]">Enviar mensagem</button>
-            <a :href="whatsappLink" target="_blank" class="rounded-full border border-[#9f6a1d] bg-[#fff7df] px-7 py-3.5 text-center text-sm font-black text-[#7c5316] transition hover:bg-[#f6ecd2]">Chamar no WhatsApp</a>
-          </div>
-        </form>
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+            <button
+                type="submit"
+                class="rounded-full bg-[#2f9c44] px-7 py-3.5 text-sm font-black text-white shadow-lg shadow-green-100 transition hover:bg-[#267c37]"
+            >
+                Enviar mensagem
+            </button>
+
+            <a
+                :href="whatsappLink"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-full border border-[#9f6a1d] bg-[#fff7df] px-7 py-3.5 text-center text-sm font-black text-[#7c5316] transition hover:bg-[#f6ecd2]"
+            >
+                Chamar no WhatsApp
+            </a>
+        </div>
+    </form>
 
         <aside class="space-y-6">
           <div class="rounded-[36px] border border-[#d9dfcf] bg-white p-6 shadow-xl shadow-[#dfe8d7] lg:p-8">
@@ -104,6 +174,8 @@
       </div>
     </section>
 
+    <SiteFooter :brand="brand" :cart-count="cartCount" @open-cart="cartOpen = true" />
+
     <CartDrawer
       :open="cartOpen"
       :cart-count="cartCount"
@@ -125,15 +197,20 @@ import { computed, reactive, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import SiteHeader from './SiteHeader.vue';
 import CartDrawer from './CartDrawer.vue';
+import SiteFooter from './SiteFooter.vue';
 import { useCartStore } from '../stores/cartStore';
 
 const brand = {
   name: 'Família Mogi',
   slogan: 'Produtos frescos direto do produtor para sua casa',
-  whatsapp: '(11) 99999-9999',
-  email: 'contato@familiamogi.com.br',
-  logo: '/images/logo-familia-mogi.svg',
+  whatsapp: '(11) 94156-0613',
+  email: 'enzonagasava@gmail.com',
+  address: 'Mogi das Cruzes - SP',
+  logo: '/images/logo-sem-fundo.png',
 };
+
+
+const appUrl = import.meta.env.VITE_APP_URL;
 
 const cartStore = useCartStore();
 const { cart, cartCount, subtotal, shipping, total } = storeToRefs(cartStore);
@@ -184,33 +261,71 @@ function formatPhoneMask(value) {
   return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
 }
 
-function submitContact() {
-  if (!form.name.trim()) {
-    feedback.value = 'Informe seu nome para continuar.';
-    feedbackType.value = 'error';
-    return;
-  }
+async function submitContact() {
 
-  if (!form.phone.trim() && !form.email.trim()) {
-    feedback.value = 'Informe pelo menos um canal de contato: telefone ou e-mail.';
-    feedbackType.value = 'error';
-    return;
-  }
+    if (!form.name.trim()) {
+        feedback.value = 'Informe seu nome para continuar.'
+        feedbackType.value = 'error'
+        return
+    }
 
-  if (!form.message.trim()) {
-    feedback.value = 'Escreva uma mensagem antes de enviar.';
-    feedbackType.value = 'error';
-    return;
-  }
+    if (!form.phone.trim() && !form.email.trim()) {
+        feedback.value = 'Informe pelo menos um canal de contato: telefone ou e-mail.'
+        feedbackType.value = 'error'
+        return
+    }
 
-  feedback.value = 'Mensagem enviada com sucesso. Integre este formulário com sua API para envio real.';
-  feedbackType.value = 'success';
+    if (!form.message.trim()) {
+        feedback.value = 'Escreva uma mensagem antes de enviar.'
+        feedbackType.value = 'error'
+        return
+    }
 
-  form.name = '';
-  form.phone = '';
-  form.email = '';
-  form.subject = 'Pedido';
-  form.message = '';
+    try {
+        const response = await fetch(
+            "https://formsubmit.co/ajax/enzonagasava@gmail.com",
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: form.name,
+                    phone: form.phone,
+                    email: form.email,
+                    subject: form.subject,
+                    message: form.message,
+                }),
+            }
+        )
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        if (data.success) {
+            feedbackType.value = 'success'
+            feedback.value = 'Mensagem enviada com sucesso!'
+
+            form.name = ''
+            form.phone = ''
+            form.email = ''
+            form.subject = 'Pedido'
+            form.message = ''
+        } else {
+            throw new Error(data.message || 'Erro ao enviar mensagem')
+        }
+
+    } catch (error) {
+        console.error('Erro ao enviar formulário:', error)
+
+        feedbackType.value = 'error'
+        feedback.value =
+            'Não foi possível enviar sua mensagem. Tente novamente.'
+    }
 }
 
 function updateQuantity(productId, delta) {
