@@ -45,6 +45,7 @@
 
       <div class="border-t border-[#d9dfcf] bg-white px-6 py-5">
         <div class="space-y-3 text-sm">
+
           <div class="flex items-center justify-between text-[#55614a]">
             <!-- <span>Subtotal</span> -->
             <!-- <span class="font-bold">{{ formatPrice(subtotal) }}</span> -->
