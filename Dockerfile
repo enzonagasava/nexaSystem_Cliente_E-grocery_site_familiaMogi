@@ -3,8 +3,6 @@ FROM php:8.3-apache
 RUN apt-get update && apt-get install -y \
     unzip git curl gnupg zip libzip-dev libonig-dev libxml2-dev libpq-dev \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql pgsql zip mbstring \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
     && a2enmod rewrite
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
