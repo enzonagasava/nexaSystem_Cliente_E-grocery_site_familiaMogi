@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\EGroceryAd;
 use App\Models\EGroceryImage;
+use Illuminate\Support\Str;
 
 
 class ProductsController extends Controller
@@ -47,7 +48,7 @@ class ProductsController extends Controller
                 'status' => $product->status,
                 'unit' => $payload['unit'] ?? 'unidade',
                 'badge' => $payload['badge'] ?? 'Disponível',
-                'shortDescription' => $payload['shortDescription'] ?? ($payload['short_description'] ?? 'Produto sincronizado do painel E-grocery.'),
+                'shortDescription' => Str::words($payload['shortDescription'] ?? $product->description ?? '',15,'...'),
                 'description' => $product->description ?? 'Produto sincronizado automaticamente pelo catálogo integrado.',
                 'images' => $this->resolveImages($product->id),
             ];
