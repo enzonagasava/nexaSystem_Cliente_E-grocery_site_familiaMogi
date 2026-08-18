@@ -8,7 +8,6 @@ services:
       - familia_mogi_logs:/var/www/html/storage/logs
     depends_on:
       - db
-      - redis
     restart: "no"
     environment:
       COMPOSER_ALLOW_SUPERUSER: "1"
@@ -18,11 +17,7 @@ services:
       DB_DATABASE: familia_mogi
       DB_USERNAME: postgres
       DB_PASSWORD: rootpassword123
-      CACHE_STORE: redis
-      SESSION_DRIVER: redis
-      QUEUE_CONNECTION: redis
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
+
     ports:
       - "8040:80"
       - "5177:5177"
@@ -37,65 +32,6 @@ services:
         aliases:
           - familia-mogi-api
 
-  queue:
-    build: .
-    container_name: familiaMogi_front-queue
-    working_dir: /var/www/html
-    volumes:
-      - ./:/var/www/html
-    depends_on:
-      - db
-      - redis
-    restart: unless-stopped
-    environment:
-      COMPOSER_ALLOW_SUPERUSER: "1"
-      DB_CONNECTION: pgsql
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DATABASE: familia_mogi
-      DB_USERNAME: postgres
-      DB_PASSWORD: rootpassword123
-      CACHE_STORE: redis
-      SESSION_DRIVER: redis
-      QUEUE_CONNECTION: redis
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    command: >
-      bash -lc "
-      php artisan queue:work redis --sleep=1 --tries=3 --timeout=120"
-    networks:
-      - default
-      - shared-network
-
-  scheduler:
-    build: .
-    container_name: familiaMogi_front-scheduler
-    working_dir: /var/www/html
-    volumes:
-      - ./:/var/www/html
-    depends_on:
-      - db
-      - redis
-    restart: unless-stopped
-    environment:
-      COMPOSER_ALLOW_SUPERUSER: "1"
-      DB_CONNECTION: pgsql
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DATABASE: familia_mogi
-      DB_USERNAME: postgres
-      DB_PASSWORD: rootpassword123
-      CACHE_STORE: redis
-      SESSION_DRIVER: redis
-      QUEUE_CONNECTION: redis
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    command: >
-      bash -lc "
-      php artisan schedule:work"
-    networks:
-      - default
-      - shared-network
 
   db:
     image: postgres:16-alpine
@@ -111,22 +47,8 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./docker/postgres/init:/docker-entrypoint-initdb.d
 
-  redis:
-    image: redis:7-alpine
-    container_name: familiaMogi_front-redis
-    restart: unless-stopped
-    command: ["redis-server", "--appendonly", "yes"]
-    volumes:
-      - redisdata:/data
-    ports:
-      - "6380:6379"
-    networks:
-      - default
-      - shared-network
-
 volumes:
   pgdata:
-  redisdata:
   familia_mogi_logs:
 
 networks:
