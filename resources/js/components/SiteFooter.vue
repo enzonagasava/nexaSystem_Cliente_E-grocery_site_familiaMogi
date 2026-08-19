@@ -26,9 +26,9 @@
         <div>
           <p class="text-sm font-black uppercase tracking-[0.2em] text-[#9f6a1d]">Contato</p>
           <div class="mt-4 space-y-3 text-sm text-[#55614a]">
-            <p>{{ brand.whatsapp }}</p>
-            <p>{{ brand.email }}</p>
-            <p>{{ brand.address }}</p>
+            <p>{{ user.telefone }}</p>
+            <p>{{ user.email }}</p>
+            <p>{{ enderecoFormatado }}</p>
             <p>Seg a sáb • 7h às 18h</p>
           </div>
         </div>
@@ -36,8 +36,14 @@
     </footer>
 </template>
 <script setup>
-defineProps({
+import { computed } from 'vue';
+
+const props = defineProps({
   brand: {
+    type: Object,
+    required: true,
+  },
+  user: {
     type: Object,
     required: true,
   },
@@ -48,4 +54,14 @@ defineProps({
 });
 
 defineEmits(['open-cart']);
+
+const enderecoFormatado = computed(() => {
+  const endereco = props.user.endereco;
+
+  if (!endereco) {
+    return 'Endereço não informado';
+  }
+
+  return `${endereco.logradouro}, ${endereco.numero} - ${endereco.bairro}, ${endereco.cidade} - ${endereco.estado}`;
+});
 </script>

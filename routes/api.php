@@ -5,6 +5,7 @@ use App\Http\Controllers\Integrations\EGroceryOrderExportController;
 use App\Http\Controllers\Integrations\EGroceryImageStorageController;
 use App\Http\Controllers\Integrations\EGroceryIntegrationHealthController;
 use App\Http\Controllers\Integrations\EGroceryWebhookController;
+use App\Http\Controllers\ContatoController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
@@ -81,3 +82,6 @@ Route::prefix('v1/integrations/e-grocery')->group(function () {
     Route::post('/images/upload', [EGroceryImageStorageController::class, 'store']);
     Route::get('/health', EGroceryIntegrationHealthController::class);
 });
+
+Route::get('/config', [ContatoController::class, 'config']);
+

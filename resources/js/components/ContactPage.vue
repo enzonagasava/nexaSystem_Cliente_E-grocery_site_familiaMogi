@@ -174,7 +174,7 @@
       </div>
     </section>
 
-    <SiteFooter :brand="brand" :cart-count="cartCount" @open-cart="cartOpen = true" />
+    <SiteFooter :brand="brand" :user="contact" :cart-count="cartCount" @open-cart="cartOpen = true" />
 
     <CartDrawer
       :open="cartOpen"
@@ -193,8 +193,9 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { storeToRefs } from 'pinia';
+import axios from 'axios';
 import SiteHeader from './SiteHeader.vue';
 import CartDrawer from './CartDrawer.vue';
 import SiteFooter from './SiteFooter.vue';
@@ -203,12 +204,8 @@ import { useCartStore } from '../stores/cartStore';
 const brand = {
   name: 'Família Mogi',
   slogan: 'Produtos frescos direto do produtor para sua casa',
-  whatsapp: '(11) 94156-0613',
-  email: 'enzonagasava@gmail.com',
-  address: 'Mogi das Cruzes - SP',
   logo: '/images/logo-sem-fundo.png',
 };
-
 
 const appUrl = import.meta.env.VITE_APP_URL;
 
@@ -229,17 +226,11 @@ const form = reactive({
 
 const whatsappLink = computed(() => {
   const text = encodeURIComponent('Olá, vim pelo site da Família Mogi e gostaria de atendimento.');
-  return `https://wa.me/5511999999999?text=${text}`;
+  return `https://wa.me/${contact.value.telefone}?text=${text}`;
 });
 
 const mapsLink = 'https://www.google.com/maps/search/?api=1&query=Rua+Exemplo,+123+-+Bairro+Central,+Mogi+das+Cruzes+-+SP';
 
-const contactCards = [
-  { icon: '📞', title: 'Telefone / WhatsApp', value: brand.whatsapp, description: 'Canal principal para pedidos, dúvidas e entregas.' },
-  { icon: '✉️', title: 'E-mail', value: brand.email, description: 'Ideal para parcerias, compras maiores e solicitações comerciais.' },
-  { icon: '📍', title: 'Endereço', value: 'Mogi das Cruzes - SP', description: 'Entrega local e retirada sob combinação.' },
-  { icon: '🕐', title: 'Horário', value: 'Seg a sáb • 7h às 18h', description: 'Atendimento em horário comercial e pedidos programados.' },
-];
 
 function formatPrice(value) {
   return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -339,4 +330,56 @@ function removeItem(productId) {
 function goToCheckout() {
   window.location.href = '/?checkout=1';
 }
+
+const contact = ref({
+    nome: '',
+    email: '',
+    telefone: '',
+    endereco: null,
+});
+
+const contactCards = computed(() => [
+    {
+        icon: '📞',
+        title: 'Telefone / WhatsApp',
+        value: contact.value.telefone,
+        description: 'Canal principal para pedidos, dúvidas e entregas.',
+    },
+    {
+        icon: '✉️',
+        title: 'E-mail',
+        value: contact.value.email,
+        description: 'Ideal para parcerias, compras maiores e solicitações comerciais.',
+    },
+    {
+        icon: '📍',
+        title: 'Endereço',
+        value: contact.value.endereco
+            ? `${contact.value.endereco.cidade} - ${contact.value.endereco.estado}`
+            : 'Carregando...',
+        description: 'Entrega local e retirada sob combinação.',
+    },
+    {
+        icon: '🕐',
+        title: 'Horário',
+        value: 'Seg a sáb • 7h às 18h',
+        description: 'Atendimento em horário comercial e pedidos programados.',
+    },
+]);
+
+
+async function loadContact() {
+    try {
+        const { data } = await axios.get('/api/config');
+
+        contact.value = data;
+        console.log(contact)
+    } catch (error) {
+        console.error('Erro ao carregar contato:', error);
+    }
+}
+
+onMounted(async () => {
+  await loadContact();
+});
 </script>
