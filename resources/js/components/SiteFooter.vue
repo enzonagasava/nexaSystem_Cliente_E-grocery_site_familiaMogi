@@ -74,7 +74,7 @@ onMounted(async()=>{
 });
 
 const enderecoFormatado = computed(() => {
-  const endereco = contact.endereco;
+  const endereco = contact.value.endereco;
 
   if (!endereco) {
     return 'Endereço não informado';
