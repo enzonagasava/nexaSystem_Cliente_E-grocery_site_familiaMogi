@@ -345,6 +345,7 @@ const categoryMeta = {
   Legumes: { description: 'Legumes premium com padrão visual e sabor natural.', icon: '🥕' },
   Cogumelos: { description: 'Linha especial para varejo e gastronomia.', icon: '🍄' },
   Cestas: { description: 'Combos para família e pedidos recorrentes.', icon: '🧺' },
+  Ervas: { description: 'Ervas Frescas.', icon: '🧺' },
   'Sem categoria': { description: 'Produtos gerais do catálogo.', icon: '🛒' },
 };
 
@@ -514,6 +515,11 @@ function addToCart(product) {
 
 function updateQuantity(productId, delta) {
   cartStore.updateQuantity(productId, delta);
+}
+
+
+function onOpenCart() {
+  cartOpen.value = true;
 }
 
 function removeItem(productId) {

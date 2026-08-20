@@ -168,7 +168,7 @@
       </div>
     </section>
 
-    <SiteFooter v-if="!contactLoading" :formatPhone="formatPhone" :brand="brand" :contact="contact" :cart-count="cartCount" @open-cart="cartOpen = true" />
+    <SiteFooter :brand="brand" :cart-count="cartCount" @open-cart="cartOpen = true" />
 
     <CartDrawer
       :open="cartOpen"
@@ -322,8 +322,6 @@ const contact = ref({
 });
 
 
-const contactLoading = ref(true);
-
 const contactCards = computed(() => [
     {
         icon: '📞',
@@ -359,15 +357,9 @@ async function loadContact() {
         const { data } = await axios.get('/api/config');
 
         contact.value = data;
-        console.log(contact)
-        console.log(contact.email)
-
     } catch (error) {
         console.error('Erro ao carregar contato:', error);
-    } finally {
-        contactLoading.value = false;
     }
-
 }
 
 onMounted(async () => {

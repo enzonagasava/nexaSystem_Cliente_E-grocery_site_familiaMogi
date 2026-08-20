@@ -2,7 +2,7 @@
   "hash": "501c9c00",
   "configHash": "0e9e511f",
   "lockfileHash": "b1fa96c6",
-  "browserHash": "bc42146f",
+  "browserHash": "a873f572",
   "optimized": {
     "axios": {
       "src": "../../node_modules/axios/index.js",
@@ -10,10 +10,16 @@
       "fileHash": "408f4a72",
       "needsInterop": false
     },
+    "maska": {
+      "src": "../../node_modules/maska/dist/maska.mjs",
+      "file": "maska.js",
+      "fileHash": "6b227fb7",
+      "needsInterop": false
+    },
     "maska/vue": {
       "src": "../../node_modules/maska/dist/vue.mjs",
       "file": "maska_vue.js",
-      "fileHash": "bab5511d",
+      "fileHash": "6c260083",
       "needsInterop": false
     },
     "pinia": {

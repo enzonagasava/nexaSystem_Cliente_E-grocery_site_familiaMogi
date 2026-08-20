@@ -1,5 +1,5 @@
 <template>
-    <footer v-if="!checkoutOpen" id="contato" class="border-t border-[#d9dfcf] bg-[#f1f5ea]">
+    <footer  id="contato" class="border-t border-[#d9dfcf] bg-[#f1f5ea]">
       <div class="mx-auto grid max-w-7xl gap-10 px-6 py-12 lg:grid-cols-[1.1fr_0.9fr_0.9fr] lg:px-8">
         <div>
           <div class="flex items-center gap-4">
@@ -36,14 +36,12 @@
     </footer>
 </template>
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import axios from 'axios';
+import { formatPhone } from '@/utils/formatters';
 
 const props = defineProps({
   brand: {
-    type: Object,
-    required: true,
-  },
-  contact: {
     type: Object,
     required: true,
   },
@@ -51,14 +49,32 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  formatPhone:{
-  }
 });
 
 defineEmits(['open-cart']);
 
+const contact = ref({
+    nome: '',
+    email: '',
+    telefone: '',
+    endereco: null,
+})
+async function loadContact() {
+    try {
+        const { data } = await axios.get('/api/config');
+
+        contact.value = data;
+    } catch (error) {
+        console.error('Erro ao carregar contato:', error);
+    }
+}
+
+onMounted(async()=>{
+  await loadContact()
+});
+
 const enderecoFormatado = computed(() => {
-  const endereco = props.contact.endereco;
+  const endereco = contact.endereco;
 
   if (!endereco) {
     return 'Endereço não informado';

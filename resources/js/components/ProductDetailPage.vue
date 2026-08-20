@@ -68,7 +68,7 @@
               <button type="button" class="rounded-full border border-[#9f6a1d] bg-[#fff7df] px-6 py-4 text-sm font-black text-[#7c5316] transition hover:bg-[#f6ecd2]" @click="addToCart">Adicionar ao Carrinho</button>
             </div>
 
-            <div class="mt-7 rounded-[28px] border border-[#d9dfcf] bg-[#f9fbf5] p-5">
+            <!--<div class="mt-7 rounded-[28px] border border-[#d9dfcf] bg-[#f9fbf5] p-5">
               <div class="mt-4 flex gap-2">
                 <input v-model="zipCode" type="text" placeholder="Insira seu CEP" class="min-w-0 flex-1 rounded-2xl border border-[#d9dfcf] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#2f9c44]" />
                 <button type="button" class="rounded-2xl bg-[#2f4b1f] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#223816]" @click="calculateShipping">Calcular</button>
@@ -76,6 +76,7 @@
 
               <p v-if="shippingMessage" class="mt-3 rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-[#5f6b54]">{{ shippingMessage }}</p>
             </div>
+            -->
           </aside>
         </div>
       </div>
@@ -128,7 +129,7 @@
               <p class="text-xs font-black uppercase tracking-[0.18em] text-[#2f9c44]">{{ item.category }}</p>
               <a :href="`/produtos/${item.id}`" class="mt-2 block text-xl font-black text-[#2f4b1f] hover:text-[#2f9c44]">{{ item.name }}</a>
               <div class="mt-4 flex items-end gap-2">
-                <span class="text-2xl font-black text-[#3d2d13]">{{ formatPrice(item.price) }}</span>
+                <span class="text-2xl font-black text-[#3d2d13]">{{ item.price ? formatPrice(item.price) : 'Sob Consulta'}}  </span>
                 <span class="pb-1 text-sm text-[#717a66]">/ {{ item.unit }}</span>
               </div>
             </div>

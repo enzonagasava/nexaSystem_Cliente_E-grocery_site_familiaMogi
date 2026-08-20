@@ -81,6 +81,9 @@
 </template>
 
 <script setup>
+import {onMounted, ref} from 'vue';
+import axios from 'axios';
+
 const props = defineProps({
   open: { type: Boolean, required: true },
   cartCount: { type: Number, required: true },
@@ -92,6 +95,8 @@ const props = defineProps({
   showCheckout: { type: Boolean, default: true },
 });
 
+const telefone = ref(null)
+
 defineEmits(['close', 'remove-item', 'update-quantity', 'open-checkout']);
 
 function getImage(item) {
@@ -99,8 +104,6 @@ function getImage(item) {
 }
 
 function enviarPedidoWhatsApp() {
-    const telefone = '5511941560613';
-
     const produtos = props.cart.map(item => {
         const nome = item.product.name;
         const quantidade = item.quantity;
@@ -119,8 +122,23 @@ function enviarPedidoWhatsApp() {
         'Aguardo a confirmação do pedido.'
     ].join('\n');
 
-    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+    const url = `https://wa.me/${telefone.value}?text=${encodeURIComponent(mensagem)}`;
 
     window.open(url, '_blank');
 }
+
+
+async function loadTelefone() {
+    try {
+        const { data } = await axios.get('/api/config');
+
+        telefone.value = data.telefone;
+    } catch (error) {
+        console.error('Erro ao carregar contato:', error);
+    }
+}
+
+onMounted(async()=>{
+  await loadTelefone()
+});
 </script>
