@@ -351,7 +351,7 @@ const categoryMeta = {
 const testimonials = [
   { name: 'Mariana Costa', role: 'Cliente recorrente', text: 'Os produtos chegam muito frescos e o processo de compra ficou simples e profissional.' },
   { name: 'Carlos Henrique', role: 'Restaurante local', text: 'A apresentação dos cogumelos e legumes transmite qualidade logo no primeiro contato.' },
-  { name: 'Fernanda Alves', role: 'Assinatura semanal', text: 'A cesta semanal ajudou a organizar minhas compras e reduzir idas ao mercado.' },
+  { name: 'Fernanda Alves', role: 'Cliente recorrente', text: 'A cesta semanal ajudou a organizar minhas compras e reduzir idas ao mercado.' },
 ];
 
 const initialForm = {

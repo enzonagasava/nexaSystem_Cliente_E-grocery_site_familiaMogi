@@ -57,7 +57,7 @@
                     required
                     placeholder="(11) 99999-9999"
                     class="w-full rounded-2xl border border-[#d9dfcf] bg-[#fcfdf9] px-4 py-3 text-sm outline-none transition placeholder:text-[#9ba893] focus:border-[#2f9c44] focus:bg-white"
-                    @input="onPhoneInput"
+                    v-maska="'(##) #####-####'"
                 />
             </label>
 
@@ -161,20 +161,14 @@
               <a :href="mapsLink" target="_blank" class="absolute left-2 top-2 z-10 rounded-md bg-white/95 px-2 py-1 text-xs font-semibold text-[#2f4b1f] shadow">
                 Abrir no Maps
               </a>
-              <iframe
-                title="Mapa de Mogi das Cruzes"
-                class="h-full w-full border-0"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps?q=Rua%20Exemplo%2C%20123%20-%20Bairro%20Central%2C%20Mogi%20das%20Cruzes%20-%20SP&output=embed"
-              />
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1827.3771922971684!2d-46.24166761156916!3d-23.648965594684945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce751ace3491ff%3A0x1c5c9c68d1ba561e!2sPindorama%2C%20Mogi%20das%20Cruzes%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1787230906321!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
           </div>
         </aside>
       </div>
     </section>
 
-    <SiteFooter :brand="brand" :user="contact" :cart-count="cartCount" @open-cart="cartOpen = true" />
+    <SiteFooter v-if="!contactLoading" :formatPhone="formatPhone" :brand="brand" :contact="contact" :cart-count="cartCount" @open-cart="cartOpen = true" />
 
     <CartDrawer
       :open="cartOpen"
@@ -200,6 +194,7 @@ import SiteHeader from './SiteHeader.vue';
 import CartDrawer from './CartDrawer.vue';
 import SiteFooter from './SiteFooter.vue';
 import { useCartStore } from '../stores/cartStore';
+import { formatPhone } from '@/utils/formatters';
 
 const brand = {
   name: 'Família Mogi',
@@ -237,19 +232,7 @@ function formatPrice(value) {
 }
 
 function onPhoneInput(event) {
-  form.phone = formatPhoneMask(event.target.value);
-}
-
-function formatPhoneMask(value) {
-  const digits = value.replace(/\D/g, '').slice(0, 11);
-
-  if (!digits) return '';
-
-  if (digits.length <= 2) return `(${digits}`;
-  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
-
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+  form.phone = formatPhone(event.target.value);
 }
 
 async function submitContact() {
@@ -274,7 +257,7 @@ async function submitContact() {
 
     try {
         const response = await fetch(
-            "https://formsubmit.co/ajax/enzonagasava@gmail.com",
+            `https://formsubmit.co/ajax/${contact.value.email}`,
             {
                 method: 'POST',
                 headers: {
@@ -338,11 +321,14 @@ const contact = ref({
     endereco: null,
 });
 
+
+const contactLoading = ref(true);
+
 const contactCards = computed(() => [
     {
         icon: '📞',
         title: 'Telefone / WhatsApp',
-        value: contact.value.telefone,
+        value: formatPhone(contact.value.telefone),
         description: 'Canal principal para pedidos, dúvidas e entregas.',
     },
     {
@@ -362,7 +348,7 @@ const contactCards = computed(() => [
     {
         icon: '🕐',
         title: 'Horário',
-        value: 'Seg a sáb • 7h às 18h',
+        value: 'Seg a sáb •  7h às 18h',
         description: 'Atendimento em horário comercial e pedidos programados.',
     },
 ]);
@@ -374,9 +360,14 @@ async function loadContact() {
 
         contact.value = data;
         console.log(contact)
+        console.log(contact.email)
+
     } catch (error) {
         console.error('Erro ao carregar contato:', error);
+    } finally {
+        contactLoading.value = false;
     }
+
 }
 
 onMounted(async () => {

@@ -26,8 +26,8 @@
         <div>
           <p class="text-sm font-black uppercase tracking-[0.2em] text-[#9f6a1d]">Contato</p>
           <div class="mt-4 space-y-3 text-sm text-[#55614a]">
-            <p>{{ user.telefone }}</p>
-            <p>{{ user.email }}</p>
+            <p >{{ formatPhone(contact.telefone) }}</p>
+            <p>{{ contact.email }}</p>
             <p>{{ enderecoFormatado }}</p>
             <p>Seg a sáb • 7h às 18h</p>
           </div>
@@ -43,7 +43,7 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  user: {
+  contact: {
     type: Object,
     required: true,
   },
@@ -51,12 +51,14 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  formatPhone:{
+  }
 });
 
 defineEmits(['open-cart']);
 
 const enderecoFormatado = computed(() => {
-  const endereco = props.user.endereco;
+  const endereco = props.contact.endereco;
 
   if (!endereco) {
     return 'Endereço não informado';
