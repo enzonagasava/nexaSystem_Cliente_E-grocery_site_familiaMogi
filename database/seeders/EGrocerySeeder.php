@@ -127,11 +127,8 @@ class EGrocerySeeder extends Seeder
                 'external_ad_id'    => 'ad_' . Str::uuid(),
                 'title'             => $productData['name'],
                 'category'          => $productData['category'],
-                'description'       => $faker->sentence(10),
-                'status'            => $faker->randomElement([
-                    'active',
-                    'inactive',
-                ]),
+                'description'       => null,
+                'status'            => 'active',
                 'priority'          => $faker->numberBetween(1, 5),
                 'starts_at'         => Carbon::now()->subDays(
                     rand(0, 5)
