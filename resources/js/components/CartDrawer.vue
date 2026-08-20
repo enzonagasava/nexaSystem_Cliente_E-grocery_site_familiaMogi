@@ -122,7 +122,7 @@ function enviarPedidoWhatsApp() {
         'Aguardo a confirmação do pedido.'
     ].join('\n');
 
-    const url = `https://wa.me/55${telefone.value}?text=${encodeURIComponent(mensagem)}`;
+    const url = `https://wa.me/${telefone.value}?text=${encodeURIComponent(mensagem)}`;
 
     window.open(url, '_blank');
 }
