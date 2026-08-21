@@ -14,7 +14,7 @@
       </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-5 py-14 lg:px-8">
+    <section class="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
       <div class="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
     <form @submit.prevent="submitContact"
         class="rounded-[36px] border border-[#d9dfcf] bg-white p-6 shadow-xl shadow-[#dfe8d7] lg:p-8"
@@ -161,7 +161,7 @@
               <a :href="mapsLink" target="_blank" class="absolute left-2 top-2 z-10 rounded-md bg-white/95 px-2 py-1 text-xs font-semibold text-[#2f4b1f] shadow">
                 Abrir no Maps
               </a>
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1827.3771922971684!2d-46.24166761156916!3d-23.648965594684945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce751ace3491ff%3A0x1c5c9c68d1ba561e!2sPindorama%2C%20Mogi%20das%20Cruzes%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1787230906321!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <iframe class="h-full w-full border-0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1827.3771922971684!2d-46.24166761156916!3d-23.648965594684945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce751ace3491ff%3A0x1c5c9c68d1ba561e!2sPindorama%2C%20Mogi%20das%20Cruzes%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1787230906321!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
           </div>
         </aside>

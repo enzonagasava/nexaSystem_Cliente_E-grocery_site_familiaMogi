@@ -138,7 +138,7 @@
       </div>
     </section>
 
-    <SiteFooter :brand="brand" :cart-count="cartCount" @open-cart="onOpenCart"/>
+    <SiteFooter  :brand="brand" :cart-count="cartCount" @open-cart="onOpenCart"/>
 
     <CartDrawer
       :open="cartOpen"
